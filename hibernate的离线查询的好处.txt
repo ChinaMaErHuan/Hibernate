@@ -1,0 +1,37 @@
+	Hibernate3支持DetachedCriteria，这是一个非常有意义的特性！我们知道，
+	在常规的Web编程中，有大量的动态条件查询，即用户在网页上面自由选择某些条件，程序根据用户的选择条件，
+	动态生成SQL语句，进行查询。 针对这种需求，对于分层应用程序来说，
+	Web层需要传递一个查询的条件列表给业务层对象，业务层对象获得这个条件列表之后，然后依次取出条件，构造查询语句。
+	这里的一个难点是条件列表用什么来构造？传统上使用Map，但是这种方式缺陷很大，Map可以传递的信息非常有限，
+	只能传递name和value，无法传递究竟要做怎样的条件运算，究竟是大于，小于，like，还是其它的什么，
+	业务层对象必须确切掌握每条entry的隐含条件。因此一旦隐含条件改变，业务层对象的查询构造算法必须相应修改，
+	但是这种查询条件的改变是隐式约定的，而不是程序代码约束的，因此非常容易出错。 
+	DetachedCriteria可以解决这个问题，即在web层，程序员使用DetachedCriteria来构造查询条件，
+	然后将这个DetachedCriteria作为方法调用参数传递给业务层对象。而业务层对象获得DetachedCriteria之后，
+	可以在session范围内直接构造Criteria，进行查询。就此，查询语句的构造完全被搬离到web层实现，
+	而业务层则只负责完成持久化和查询的封装即可，与查询条件构造完全解耦，非常完美！
+	这恐怕也是以前很多企图在web层代码中构造HQL语句的人想实现的梦想吧！ 示例代码片段如下：
+	 web层程序构造查询条件： 
+	 Java代码 DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Department.class);
+	  detachedCriteria.add(Restrictions.eq("name", "department")).createAlias("employees", "e").add(Restrictions.gt(("e.age"), new Integer(20))); 
+	  Department和Employee是一对多关联，查询条件为： 名称是“department”开发部门； 部门里面的雇员年龄大于20岁； 
+	  业务层对象使用该条件执行查询： 
+	  Java代码 detachedCriteria.getExecutableCriteria(session);.list();; 
+	  最大的意义在于，业务层代码是固定不变的，所有查询条件的构造都在web层完成，业务层只负责在session内执行之。
+	  这样代码就可放之四海而皆准，都无须修改了。 ----------------------------------
+	  动态查询就是查询条件不确定的查询,或者说查询条件是根据用户传入的某些参数来生成的，
+	  在查询之前就已经生成了查询条件,hibernate中的查询条件一般都需要在取得session后才构造，
+	  而hibernate动态查询在取得session之前就已经构造好了查询条件，只是将查询条件作为参数传入到查询方法中，
+	  因此也叫离线查询，动态查询的条件可以在web层中就已经构造好了，例如servlet中，构造查询条件的
+
+	方式如下： DetachedCriteria dc=DetachedCriteria.forClass(User.class); 
+	String name=request.getParameter("name");//接收参数
+	 dc.add(Restrictions.eq("name",name));//此为约束条件，等于是用eq，
+	 还可以根据需要设置成大于小于等等 List users=dc(dc);//
+	 调用实现方法 实现查询方法如下： public List dc(DetachedCriteria dc){ 
+		 Session s=HibernateUtil.getSession();//取得session 
+		 Criteria c=dc.getExecutableCriteria(s); 
+		 List list=c.list(); 
+		 s.close(); 
+		 return list;
+	  } 上面的方法就可以完成动态条件查询

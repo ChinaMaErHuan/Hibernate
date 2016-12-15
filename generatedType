@@ -1,0 +1,49 @@
+JPA提供的四种标准用法为TABLE,SEQUENCE,IDENTITY,AUTO. 
+TABLE：使用一个特定的数据库表格来保存主键。 
+SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。 
+IDENTITY：主键由数据库自动生成（主要是自动增长型） 
+AUTO：主键由程序控制。 在指定主键时，如果不指定主键生成策略，默认为AUTO。 
+
+	四种数据库的支持情况如下：
+	 
+	数据库名称
+	支持的id策略
+	mysql
+	GenerationType.TABLE
+	GenerationType.AUTO
+	GenerationType.IDENTITY
+	不支持GenerationType.SEQUENCE
+	oracle
+	strategy=GenerationType.AUTO
+	GenerationType.SEQUENCE
+	GenerationType.TABLE
+	不支持GenerationType.IDENTITY
+	
+	postgreSQL
+	GenerationType.TABLE
+	GenerationType.AUTO
+	GenerationType.IDENTITY
+	GenerationType.SEQUENCE
+	都支持
+	kingbase
+	GenerationType.TABLE
+	GenerationType.SEQUENCE
+	GenerationType.IDENTITY
+	GenerationType.AUTO
+	都支持
+	
+	
+	
+	如果使用Hibernate对JPA的实现，可以使用Hibernate对主键生成策略的扩展，通过Hibernate的@GenericGenerator实现。
+
+　　@GenericGenerator(name = "system-uuid", strategy = "uuid")　声明一个策略通用生成器，name为"system-uuid",策略strategy为"uuid"。
+　　@GeneratedValue(generator = "system-uuid")　用generator属性指定要使用的策略生成器。
+　　这是我在项目中使用的一种方式，生成32位的字符串，是唯一的值。最通用的，适用于所有数据库。
+	
+	UUID(Universally Unique Identifier)全局唯一标识符,是指在一台机器上生成的数字，
+	它保证对在同一时空中的所有机器都是唯一的。按照开放软件基金会(OSF)制定的标准计算，
+	用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字。
+	由以下几部分的组合：当前日期和时间(UUID的第一个部分与时间有关，如果你在生成一个UUID之后，
+	过几秒又生成一个UUID，则第一个部分不同，其余相同)，时钟序列，全局唯一的
+	IEEE机器识别号（如果有网卡，从网卡获得，没有网卡以其他方式获得），UUID的唯一缺陷在于生成的结果串会比较长。 
+	

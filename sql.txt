@@ -1,0 +1,52 @@
+	/*查询出没有学生的班级*/
+	
+
+
+/////////////////////////////////////////////////
+	SELECT
+		*
+	FROM
+		tz_hql_classroom c
+	WHERE
+		c.id NOT IN (
+			SELECT
+				s.classroom_id
+			FROM
+				tz_hql_student s
+		);
+	
+/////////////////////////////////////////////////	
+	SELECT
+		c.*
+	FROM
+		tz_hql_classroom AS c
+	LEFT JOIN tz_hql_student AS s ON s.classroom_id = c.id
+	WHERE
+		s.classroom_id IS NULL;
+		
+/////////////////////////////////////////////////	
+	
+	SELECT
+		c.*, COUNT(s.classroom_id) AS count_num
+	FROM
+		tz_hql_classroom AS c
+	LEFT JOIN tz_hql_student AS s ON s.classroom_id = c.id
+	GROUP BY
+		c.id
+	HAVING
+		count_num = 0;
+			
+/////////////////////////////////////////////////	
+	SELECT
+		*
+	FROM
+		tz_hql_classroom AS c
+	WHERE
+		NOT EXISTS (
+			SELECT
+				*
+			FROM
+				tz_hql_student AS s
+			WHERE
+				s.classroom_id = c.id
+		);

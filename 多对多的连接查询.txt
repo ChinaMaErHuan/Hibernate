@@ -1,0 +1,20 @@
+SELECT
+	a.*, b.*,c.*
+FROM
+	tz_manytomany_course_double as a
+	LEFT JOIN
+	tz_manytomany_students_courses_double as b 
+	on a.id=b.course_id
+	LEFT JOIN 
+	tz_manytomany_student_double as c on c.id=b.student_id;
+	
+	
+	
+	结果如下:
+	
+	
+	id  course_name   student_id 	course_id 	id1 	student_name
+	1	语文				1				1		1		张三
+	2	化学				1				2		1		张三
+	1	语文				2				1		2		李四
+	2	化学				2				2		2		李四

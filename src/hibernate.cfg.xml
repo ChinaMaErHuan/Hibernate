@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+	<property name="myeclipse.connection.profile">mysql</property>
+	<property name="connection.url">
+		jdbc:mysql://localhost:3306/blog
+	</property>
+	<property name="connection.username">root</property>
+	<property name="connection.password">147852</property>
+	<property name="connection.driver_class">
+		com.mysql.jdbc.Driver
+	</property>
+	<property name="dialect">
+		org.hibernate.dialect.MySQLDialect
+	</property>
+	<property name="hibernate.show_sql">true</property>
+	<property name="hibernate.format_sql">false</property>
+	<property name="hibernate.hbm2ddl.auto">update</property>
+	<!-- 开启二级缓存的查询，但是要在sql语句后面加入setCacheable(true)才生效 -->
+	 <!-- 启动"查询缓存"如果想缓存使用findall()、list()、Iterator()、createCriteria()、createQuery()等方法获得的数据结果集,必须配置此项-->  
+	<property name="hibernate.cache.use_query_cache">true</property>
+	<!-- 打开ehcache的二级缓存 -->
+	<property name="hibernate.cache.use_second_level_cache">true</property>
+	<!-- ehcache的工程类 -->
+ 	<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+	<!-- hibernate3的配置 -->
+<!-- 	<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> -->
+	<!-- session通过getCurrentSession()获取会话的事务  -->
+	<property name="current_session_context_class">thread</property>
+	
+	
+	<!-- c3p0数据源连接 -->
+	<!-- 在连接池中的数据库连接的最少数目 -->
+	<property name="c3p0.min_size">5</property>
+	<!-- 最大数目 -->
+	<property name="c3p0.max_size">20</property>
+	<!-- 设定数据库连接的过期时间以毫秒为单位如果某个连接处于空闲状态的时间超过timeout时间就会从连接池中删除 -->
+	<property name="c3p0.timeout">5000</property>
+	<!-- c3p0数据库链接,指定连接池里最大缓存多少个Statement对象 -->
+	<property name="hibernate.c3p0.max_statements">100</property>
+	<!-- 每3000秒检查所有连接池中的空闲连接 以秒为单位 -->
+	<property name="c3p0.idle_test_period">3000</property>
+	<!-- 当数据库连接池中链接用完时 一次性创建的数目 -->
+	<property name="hibernate.c3p0.acquire_increment">2</property>
+	<mapping class="com.meh.bean.User" />
+	<mapping class="com.meh.bean.Student" />
+	<mapping class="com.meh.bean.Teacher" />
+	<mapping class="com.meh.bean2.Content" />
+	<mapping class="com.meh.bean2.Course" />
+	<mapping class="com.meh.bean2.Person" />
+	<mapping class="com.meh.bean2.StudentClass" />
+	<mapping class="com.meh.onetoone.TzUser" />
+	<mapping class="com.meh.onetoone.TzUserChildren" />
+	<mapping class="com.meh.onetoone.tab.TabUser" />
+	<mapping class="com.meh.onetoone.tab.TabUserChildren" />
+	<mapping class="com.meh.manytoone.MAddress" />
+	<mapping class="com.meh.manytoone.MPerson" />
+	<mapping class="com.meh.onetomany.double2.CityOneToMany" />
+	<mapping class="com.meh.onetomany.double2.PersonOneToMany" />
+	<mapping class="com.meh.onetomany.single.Customer" />
+	<mapping class="com.meh.onetomany.single.Ticket" />
+	<mapping class="com.meh.manytomany.single.CourseManyToMany" />
+	<mapping class="com.meh.manytomany.single.StudentManyToMany" />
+	<mapping class="com.meh.manytomany.double2.CourseManyToManyDouble" />
+	<mapping class="com.meh.manytomany.double2.StudentManyToManyDouble" />
+	<mapping class="com.meh.hql.ClassRoom" />
+	<mapping class="com.meh.hql.StudentHql" />
+	<mapping class="com.meh.folder.Folder" />
+	<mapping class="com.meh.folder.Resources" />
+	<!-- 必须放在mapping后面 -->
+<!-- 	<class-cache usage="read-write" class="com.meh.hql.StudentHql"/> -->
+</session-factory>
+</hibernate-configuration>

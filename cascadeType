@@ -1,0 +1,5 @@
+CascadeType.PERSIST: 如果一个实体是受管状态, 或者当persist()函数被调用时, 触发级联创建(create)操作 
+CascadeType.MERGE: 如果一个实体是受管状态, 或者当merge()函数被调用时, 触发级联合并(merge)操作 
+CascadeType.REMOVE: 当delete()函数被调用时, 触发级联删除(remove)操作 
+CascadeType.REFRESH: 当refresh()函数被调用时, 触发级联更新(refresh)操作 
+CascadeType.ALL: 以上全部

@@ -1,0 +1,49 @@
+<ehcache>
+	<!-- 设置缓存数据文件的存储目录 -->
+    <diskStore path="java.io.tmpdir"/>
+	<!-- 设置缓存的数据默认过期策略 -->
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        overflowToDisk="true"
+        memoryStoreEvictionPolicy = "LRU"
+        />
+<!--         关于缓存算法，常见有三种：  -->
+<!-- ● LRU：（Least Rencently Used）新来的对象替换掉使用时间算最近很少使用的对象  -->
+<!-- ● LFU：（Least Frequently Used）替换掉按命中率高低算比较低的对象  -->
+<!-- ● LFU：（First In First Out）把最早进入二级缓存的对象替换掉  -->
+	<!-- 设置具体的命名缓存的数据过期策略 -->
+    <cache name="sampleCache1"
+   	 
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+
+	<!-- <cache name="sampleCache1" -->
+	<!-- 缓存对象的最大数目-->
+	<!-- maxElementsInMemory="10000" -->
+	<!-- 制定是否永不过期 false为过期 -->
+	<!-- eternal="false" -->
+	<!-- 对象处于空闲状态的最大秒数 -->
+	<!-- timeToIdleSeconds="300" -->
+	<!-- 对象处于缓存状态的最大秒数 -->
+	<!-- timeToLiveSeconds="600" -->
+	<!-- 内存溢出的时候是否将溢出对象写入硬盘 -->
+	<!-- overflowToDisk="true" -->
+	<!-- /> -->
+    <cache name="sampleCache2"
+        maxElementsInMemory="1000"
+        eternal="true"
+        timeToIdleSeconds="0"
+        timeToLiveSeconds="0"
+        overflowToDisk="false"
+        /> -->
+
+    <!-- Place configuration for your caches following -->
+
+</ehcache>
